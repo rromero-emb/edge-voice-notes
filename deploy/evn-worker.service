@@ -1,0 +1,29 @@
+# Processes the queue. `evn run` repairs interrupted recordings first (recover),
+# then resumes the queue from the last checkpoint.
+[Unit]
+Description=edge-voice-notes queue worker
+After=local-fs.target llama-server.service
+Wants=llama-server.service
+# Optional: only process on external power (see README, "Battery")
+#ConditionACPower=true
+
+[Service]
+User=evn
+Environment=EVN_CONFIG=/etc/edge-voice-notes/config.toml
+ExecStart=/usr/bin/python3 -m edge_voice_notes run
+Restart=always
+RestartSec=10
+# Recording has priority over processing
+Nice=10
+IOSchedulingClass=idle
+# Offline by construction: only the local llama-server is reachable
+IPAddressDeny=any
+IPAddressAllow=localhost
+ProtectSystem=strict
+ReadWritePaths=/var/lib/edge-voice-notes
+ProtectHome=yes
+PrivateTmp=yes
+NoNewPrivileges=yes
+
+[Install]
+WantedBy=multi-user.target

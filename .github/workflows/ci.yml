@@ -1,0 +1,50 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    # Fake engines only: no models are downloaded. Includes the SIGKILL resume test.
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: x86_64, Python 3.12
+            runs-on: ubuntu-24.04
+          - name: aarch64, Python 3.12
+            runs-on: ubuntu-24.04-arm
+          - name: Debian 12 (Armbian base), Python 3.11
+            runs-on: ubuntu-24.04
+            container: debian:bookworm
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.runs-on }}
+    container: ${{ matrix.container }}
+    timeout-minutes: 15
+    steps:
+      - name: Python in container
+        if: matrix.container
+        run: apt-get update && apt-get install -y --no-install-recommends python3 git ca-certificates
+      - uses: actions/checkout@v7
+      - name: Unit, pipeline and crash tests
+        env:
+          PYTHONPATH: src:tests
+          EVN_CRASH_SEEDS: "1,2,3,4,5"
+        run: python3 -m unittest discover -s tests -t tests -v
+      - name: CLI smoke test with fake engines
+        env:
+          PYTHONPATH: src
+        run: |
+          set -eux
+          d=$(mktemp -d)
+          printf 'data_dir = "%s"\nchunk_seconds = 20\n' "$d" > "$d/config.toml"
+          python3 -c "from edge_voice_notes import audio; audio.write_tone_bursts('$d/in.wav', 75)"
+          python3 -m edge_voice_notes -c "$d/config.toml" enqueue "$d/in.wav"
+          python3 -m edge_voice_notes -c "$d/config.toml" run --once
+          python3 -m edge_voice_notes -c "$d/config.toml" status | grep -q " done "
+          cat "$d"/recordings/*/summary.md

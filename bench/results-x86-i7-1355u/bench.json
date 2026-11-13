@@ -1,0 +1,24 @@
+{
+  "arch": "x86_64",
+  "cores": 12,
+  "machine": "13th Gen Intel(R) Core(TM) i7-1355U",
+  "summarise": {
+    "actions_kept": 3,
+    "actions_rejected": 0,
+    "build": "b1-4df9b47",
+    "llama_server_peak_rss_mb": 2190,
+    "model": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+    "sections": 2,
+    "transcript_s": 301,
+    "wall_s": 92.7
+  },
+  "transcribe": {
+    "audio_s": 360.0,
+    "binary": "whisper.cpp version: 1.9.5-dev",
+    "model": "ggml-base.en.bin",
+    "peak_rss_mb": 407,
+    "rtf": 0.214,
+    "threads": 4,
+    "wall_s": 76.92
+  }
+}

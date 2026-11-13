@@ -1,0 +1,20 @@
+# Start/stop from a button handler: `systemctl start evn-record` / `systemctl stop evn-record`.
+# SIGINT makes arecord finalise the WAV; a power cut instead is repaired by `evn recover`.
+[Unit]
+Description=edge-voice-notes recording
+After=sound.target local-fs.target
+
+[Service]
+Type=exec
+User=evn
+SupplementaryGroups=audio
+Environment=EVN_CONFIG=/etc/edge-voice-notes/config.toml
+ExecStart=/usr/bin/python3 -m edge_voice_notes record
+KillSignal=SIGINT
+TimeoutStopSec=15
+Nice=-5
+IPAddressDeny=any
+ProtectSystem=strict
+ReadWritePaths=/var/lib/edge-voice-notes
+ProtectHome=yes
+NoNewPrivileges=yes

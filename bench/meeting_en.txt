@@ -1,0 +1,48 @@
+[00:00] Okay, let's get started. This is the weekly sync for the recorder prototype.
+[00:06] First item is battery life, then the USB download, then the enclosure order.
+[00:13] Maria, can you give us the battery numbers from the bench?
+[00:17] Sure. With the 3000 milliamp hour cell the prototype recorded for nine hours straight.
+[00:25] Idle with the screen off it draws about forty milliamps, which is too high.
+[00:32] Transcription is the expensive part. A one hour recording took about thirty five minutes on the CPU.
+[00:41] And the summary on top of that was around four minutes with the small model.
+[00:48] So a full day of meetings would drain the battery before processing finishes.
+[00:55] Could we only process while it is on the charger?
+[01:00] That would solve most of it. The queue already survives being unplugged, so it can just resume.
+[01:08] I like that. Let's make it the default: processing starts when external power is present.
+[01:15] Agreed. We decided to process only on external power for the first version.
+[01:22] Maria will send the measured current profile for each phase by Friday.
+[01:29] I'll include idle, recording, transcription and the language model separately.
+[01:36] Good. Next, the USB download. Javier, where are we?
+[01:41] The gadget mode works on the new image. The board shows up as a network adapter.
+[01:48] The download page lists recordings with the summary and the action items.
+[01:54] Someone should check what happens on Windows, I only tried Linux and a Mac.
+[02:02] Also we never expose the file system as a mass storage drive. That was a deliberate choice.
+[02:10] Right, mass storage while the device is writing is how you corrupt a card.
+[02:16] What about security on that page? Anyone on the cable can read everything.
+[02:22] The recordings sit on an encrypted volume that is unlocked with the PIN at boot.
+[02:29] But once unlocked, the page itself has no password.
+[02:34] Let's add a pairing code shown on the device screen. Javier will add the pairing code before the 30th of November.
+[02:43] That's fine. It is a small change.
+[02:47] Third item, enclosures. We have two left and the pilot needs twelve.
+[02:54] The supplier quoted three weeks lead time.
+[02:59] Ana will order ten more enclosures this week.
+[03:04] Do we want the version with the bigger microphone hole?
+[03:09] Yes. The tests with the small hole lost a lot of high frequencies and the transcripts were worse.
+[03:17] We agreed to switch to the bigger microphone opening for the pilot units.
+[03:24] One more thing on accuracy. The model struggles with product names.
+[03:30] It wrote "drag on" instead of Dragon twice in yesterday's notes.
+[03:36] We could pass a short vocabulary prompt with the names we use.
+[03:41] We should probably look into that at some point.
+[03:46] Let's also compare the base model with the small model on the same recordings.
+[03:53] I can run that comparison. I'll do it next sprint.
+[03:58] Last topic, memory. The eight gigabyte board runs both models, but not at the same time.
+[04:06] That's fine because the queue runs transcription and then summary, never both.
+[04:12] So do we still need the sixteen gigabyte version?
+[04:17] Not for the pilot. We decided to ship the pilot on the eight gigabyte board.
+[04:24] If customers want longer context summaries we can revisit.
+[04:30] Okay. Anything else?
+[04:33] The status file now records the model versions for every recording, so we can trace any summary back.
+[04:41] Good, that will help when we change models.
+[04:45] Ana, can you also update the user guide for the new download page?
+[04:50] Yes, Ana will update the user guide by next Tuesday.
+[04:56] Great. Thanks everyone, same time next week.
