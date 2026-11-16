@@ -1,0 +1,23 @@
+{
+  "id": "03_vague_planning",
+  "description": "Trap-heavy planning chat: ideas, a named person mentioned without a commitment, 'I'll think about it'. Only one real action.",
+  "transcript": [
+    ["00:00", "Let's brainstorm the features for next year."],
+    ["00:05", "We should probably support a second microphone at some point."],
+    ["00:11", "Maybe we could ask Pedro what he thinks about the battery."],
+    ["00:17", "I'll think about the pricing, no promises."],
+    ["00:22", "It might be worth trying a bigger language model."],
+    ["00:28", "Lucia will write the feature list into the wiki by next Monday."],
+    ["00:34", "Let's keep the rest open for now."]
+  ],
+  "decisions": [],
+  "actions": [
+    {"t": "00:28", "owner": "Lucia", "due": "by next Monday", "keywords": ["feature", "list", "wiki"]}
+  ],
+  "traps": [
+    {"t": "00:05", "keywords": ["second", "microphone"]},
+    {"t": "00:11", "keywords": ["pedro", "battery"]},
+    {"t": "00:17", "keywords": ["pricing"]},
+    {"t": "00:22", "keywords": ["bigger", "language", "model"]}
+  ]
+}

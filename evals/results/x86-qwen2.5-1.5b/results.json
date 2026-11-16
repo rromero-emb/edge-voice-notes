@@ -1,0 +1,493 @@
+{
+  "asr": [
+    {
+      "del": 0,
+      "hypothesis": "And so my fellow Americans, ask not what your country can do for you, ask what you can do for your country.",
+      "id": "jfk",
+      "ins": 0,
+      "model": "ggml-base.en.bin",
+      "ref_words": 22,
+      "sub": 0,
+      "wer": 0.0
+    }
+  ],
+  "baseline": {
+    "cases": {
+      "01_firmware_standup": {
+        "action_ts_ok": 2,
+        "actions_expected": 2,
+        "actions_predicted": 3,
+        "actions_tp": 2,
+        "decisions_expected": 1,
+        "decisions_predicted": 1,
+        "decisions_tp": 1,
+        "due_ok": 2,
+        "invented": 1,
+        "items": 4,
+        "items_ts_on_line": 4,
+        "output": {
+          "actions": [
+            {
+              "due": "by Wednesday",
+              "owner": "Carlos",
+              "t_ms": 16000,
+              "task": "Tag the release candidate by Wednesday."
+            },
+            {
+              "due": null,
+              "owner": null,
+              "t_ms": 21000,
+              "task": "Look at the logging rate."
+            },
+            {
+              "due": "by Friday",
+              "owner": "Elena",
+              "t_ms": 32000,
+              "task": "Send the wear report to the hardware team by Friday."
+            }
+          ],
+          "decisions": [
+            {
+              "t_ms": 11000,
+              "text": "We agreed to ship version 1.4 to the pilot customers."
+            }
+          ]
+        },
+        "owner_ok": 2,
+        "trap_leaks": 1
+      },
+      "02_supplier_call": {
+        "action_ts_ok": 0,
+        "actions_expected": 2,
+        "actions_predicted": 1,
+        "actions_tp": 1,
+        "decisions_expected": 1,
+        "decisions_predicted": 5,
+        "decisions_tp": 1,
+        "due_ok": 0,
+        "invented": 0,
+        "items": 6,
+        "items_ts_on_line": 6,
+        "output": {
+          "actions": [
+            {
+              "due": "by the 4th of December",
+              "owner": "Tomas",
+              "t_ms": 31000,
+              "task": "Tomas will check the drawings against the new board outline."
+            }
+          ],
+          "decisions": [
+            {
+              "t_ms": 6000,
+              "text": "The supplier can deliver five hundred units in six weeks."
+            },
+            {
+              "t_ms": 12000,
+              "text": "We decided to go with the grey plastic instead of aluminium."
+            },
+            {
+              "t_ms": 25000,
+              "text": "The purchase order has to be signed before the 4th of December."
+            },
+            {
+              "t_ms": 31000,
+              "text": "Tomas will check the drawings against the new board outline."
+            },
+            {
+              "t_ms": 37000,
+              "text": "It would be nice to get a discount for the second batch."
+            }
+          ]
+        },
+        "owner_ok": 1,
+        "trap_leaks": 0
+      },
+      "03_vague_planning": {
+        "action_ts_ok": 1,
+        "actions_expected": 1,
+        "actions_predicted": 6,
+        "actions_tp": 1,
+        "decisions_expected": 0,
+        "decisions_predicted": 6,
+        "decisions_tp": 0,
+        "due_ok": 0,
+        "invented": 5,
+        "items": 12,
+        "items_ts_on_line": 12,
+        "output": {
+          "actions": [
+            {
+              "due": "Not specified",
+              "owner": "Not specified",
+              "t_ms": 5000,
+              "task": "Support a second microphone"
+            },
+            {
+              "due": "Not specified",
+              "owner": "Not specified",
+              "t_ms": 11000,
+              "task": "Ask Pedro about the battery"
+            },
+            {
+              "due": "Not specified",
+              "owner": "Not specified",
+              "t_ms": 17000,
+              "task": "Think about pricing"
+            },
+            {
+              "due": "Not specified",
+              "owner": "Not specified",
+              "t_ms": 22000,
+              "task": "Consider a bigger language model"
+            },
+            {
+              "due": "Not specified",
+              "owner": "Lucia",
+              "t_ms": 28000,
+              "task": "Write feature list"
+            },
+            {
+              "due": "Not specified",
+              "owner": "Not specified",
+              "t_ms": 34000,
+              "task": "Keep the rest open"
+            }
+          ],
+          "decisions": [
+            {
+              "t_ms": 5000,
+              "text": "We should probably support a second microphone at some point."
+            },
+            {
+              "t_ms": 11000,
+              "text": "Maybe we could ask Pedro what he thinks about the battery."
+            },
+            {
+              "t_ms": 17000,
+              "text": "I'll think about the pricing, no promises."
+            },
+            {
+              "t_ms": 22000,
+              "text": "It might be worth trying a bigger language model."
+            },
+            {
+              "t_ms": 28000,
+              "text": "Lucia will write the feature list into the wiki by next Monday."
+            },
+            {
+              "t_ms": 34000,
+              "text": "Let's keep the rest open for now."
+            }
+          ]
+        },
+        "owner_ok": 1,
+        "trap_leaks": 4
+      },
+      "04_dialogue_handoff": {
+        "action_ts_ok": 1,
+        "actions_expected": 2,
+        "actions_predicted": 1,
+        "actions_tp": 1,
+        "decisions_expected": 1,
+        "decisions_predicted": 1,
+        "decisions_tp": 1,
+        "due_ok": 0,
+        "invented": 0,
+        "items": 2,
+        "items_ts_on_line": 2,
+        "output": {
+          "actions": [
+            {
+              "due": "12th",
+              "owner": "Marco",
+              "t_ms": 19000,
+              "task": "Draft release notes"
+            }
+          ],
+          "decisions": [
+            {
+              "t_ms": 22000,
+              "text": "We agreed to freeze the image after that review."
+            }
+          ]
+        },
+        "owner_ok": 1,
+        "trap_leaks": 0
+      },
+      "05_decisions_only": {
+        "action_ts_ok": 0,
+        "actions_expected": 0,
+        "actions_predicted": 1,
+        "actions_tp": 0,
+        "decisions_expected": 3,
+        "decisions_predicted": 3,
+        "decisions_tp": 3,
+        "due_ok": 0,
+        "invented": 1,
+        "items": 4,
+        "items_ts_on_line": 4,
+        "output": {
+          "actions": [
+            {
+              "due": "by Friday",
+              "owner": "John Doe",
+              "t_ms": 24000,
+              "task": "Implement the design changes."
+            }
+          ],
+          "decisions": [
+            {
+              "t_ms": 6000,
+              "text": "We agreed to keep SQLite in WAL mode for the job queue."
+            },
+            {
+              "t_ms": 12000,
+              "text": "Networking stays disabled by default, that was decided last week and still holds."
+            },
+            {
+              "t_ms": 19000,
+              "text": "We decided not to encrypt the transcripts twice."
+            }
+          ]
+        },
+        "owner_ok": 0,
+        "trap_leaks": 0
+      }
+    },
+    "summary": {
+      "action_precision": 0.417,
+      "action_recall": 0.714,
+      "action_ts_accuracy": 0.8,
+      "decision_precision": 0.375,
+      "decision_recall": 1.0,
+      "due_accuracy": 0.4,
+      "invented_actions": 7,
+      "owner_accuracy": 1.0,
+      "totals": {
+        "action_ts_ok": 4,
+        "actions_expected": 7,
+        "actions_predicted": 12,
+        "actions_tp": 5,
+        "decisions_expected": 6,
+        "decisions_predicted": 16,
+        "decisions_tp": 6,
+        "due_ok": 2,
+        "invented": 7,
+        "items": 28,
+        "items_ts_on_line": 28,
+        "owner_ok": 5,
+        "trap_leaks": 5
+      },
+      "trap_leaks": 5,
+      "ts_valid": 1.0
+    }
+  },
+  "cases": [
+    "01_firmware_standup",
+    "02_supplier_call",
+    "03_vague_planning",
+    "04_dialogue_handoff",
+    "05_decisions_only"
+  ],
+  "current": {
+    "cases": {
+      "01_firmware_standup": {
+        "action_ts_ok": 2,
+        "actions_expected": 2,
+        "actions_predicted": 2,
+        "actions_tp": 2,
+        "decisions_expected": 1,
+        "decisions_predicted": 1,
+        "decisions_tp": 1,
+        "due_ok": 2,
+        "invented": 0,
+        "items": 3,
+        "items_ts_on_line": 3,
+        "output": {
+          "actions": [
+            {
+              "due": "by Wednesday",
+              "owner": "Carlos",
+              "t_ms": 16000,
+              "task": "Tag the release candidate by Wednesday."
+            },
+            {
+              "due": "by Friday",
+              "owner": "Elena",
+              "t_ms": 32000,
+              "task": "Send the wear report to the hardware team by Friday."
+            }
+          ],
+          "decisions": [
+            {
+              "t_ms": 11000,
+              "text": "We agreed to ship version 1.4 to the pilot customers."
+            }
+          ]
+        },
+        "owner_ok": 2,
+        "trap_leaks": 0
+      },
+      "02_supplier_call": {
+        "action_ts_ok": 1,
+        "actions_expected": 2,
+        "actions_predicted": 1,
+        "actions_tp": 1,
+        "decisions_expected": 1,
+        "decisions_predicted": 1,
+        "decisions_tp": 1,
+        "due_ok": 0,
+        "invented": 0,
+        "items": 2,
+        "items_ts_on_line": 2,
+        "output": {
+          "actions": [
+            {
+              "due": "by the 4th of December",
+              "owner": "Tomas",
+              "t_ms": 25000,
+              "task": "Tomas will check the drawings against the new board outline."
+            }
+          ],
+          "decisions": [
+            {
+              "t_ms": 12000,
+              "text": "We decided to go with the grey plastic instead of aluminium."
+            }
+          ]
+        },
+        "owner_ok": 1,
+        "trap_leaks": 0
+      },
+      "03_vague_planning": {
+        "action_ts_ok": 1,
+        "actions_expected": 1,
+        "actions_predicted": 1,
+        "actions_tp": 1,
+        "decisions_expected": 0,
+        "decisions_predicted": 0,
+        "decisions_tp": 0,
+        "due_ok": 0,
+        "invented": 0,
+        "items": 1,
+        "items_ts_on_line": 1,
+        "output": {
+          "actions": [
+            {
+              "due": null,
+              "owner": "Lucia",
+              "t_ms": 28000,
+              "task": "Write feature list"
+            }
+          ],
+          "decisions": []
+        },
+        "owner_ok": 1,
+        "trap_leaks": 0
+      },
+      "04_dialogue_handoff": {
+        "action_ts_ok": 1,
+        "actions_expected": 2,
+        "actions_predicted": 1,
+        "actions_tp": 1,
+        "decisions_expected": 1,
+        "decisions_predicted": 1,
+        "decisions_tp": 1,
+        "due_ok": 0,
+        "invented": 0,
+        "items": 2,
+        "items_ts_on_line": 2,
+        "output": {
+          "actions": [
+            {
+              "due": "12th",
+              "owner": "Marco",
+              "t_ms": 22000,
+              "task": "Draft release notes"
+            }
+          ],
+          "decisions": [
+            {
+              "t_ms": 29000,
+              "text": "We agreed to freeze the image after that review."
+            }
+          ]
+        },
+        "owner_ok": 1,
+        "trap_leaks": 0
+      },
+      "05_decisions_only": {
+        "action_ts_ok": 0,
+        "actions_expected": 0,
+        "actions_predicted": 0,
+        "actions_tp": 0,
+        "decisions_expected": 3,
+        "decisions_predicted": 3,
+        "decisions_tp": 3,
+        "due_ok": 0,
+        "invented": 0,
+        "items": 3,
+        "items_ts_on_line": 3,
+        "output": {
+          "actions": [],
+          "decisions": [
+            {
+              "t_ms": 6000,
+              "text": "We agreed to keep SQLite in WAL mode for the job queue."
+            },
+            {
+              "t_ms": 12000,
+              "text": "Networking stays disabled by default, that was decided last week and still holds."
+            },
+            {
+              "t_ms": 19000,
+              "text": "We decided not to encrypt the transcripts twice."
+            }
+          ]
+        },
+        "owner_ok": 0,
+        "trap_leaks": 0
+      }
+    },
+    "summary": {
+      "action_precision": 1.0,
+      "action_recall": 0.714,
+      "action_ts_accuracy": 1.0,
+      "decision_precision": 1.0,
+      "decision_recall": 1.0,
+      "due_accuracy": 0.4,
+      "invented_actions": 0,
+      "owner_accuracy": 1.0,
+      "totals": {
+        "action_ts_ok": 5,
+        "actions_expected": 7,
+        "actions_predicted": 5,
+        "actions_tp": 5,
+        "decisions_expected": 6,
+        "decisions_predicted": 6,
+        "decisions_tp": 6,
+        "due_ok": 2,
+        "invented": 0,
+        "items": 11,
+        "items_ts_on_line": 11,
+        "owner_ok": 5,
+        "trap_leaks": 0
+      },
+      "trap_leaks": 0,
+      "ts_valid": 1.0
+    }
+  },
+  "label": "x86 laptop, Qwen2.5-1.5B-Instruct Q4_K_M + whisper base.en",
+  "machine": "x86_64",
+  "section_max_chars": 3000,
+  "summarise_wall_s": 115.0,
+  "summariser": {
+    "build_info": "b1-4df9b47",
+    "engine": "llama.cpp (llama-server)",
+    "model": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+    "model_sha256": "6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e",
+    "seed": 42,
+    "temperature": 0.0
+  }
+}

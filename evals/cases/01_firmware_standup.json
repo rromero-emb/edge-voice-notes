@@ -1,0 +1,24 @@
+{
+  "id": "01_firmware_standup",
+  "description": "Short stand-up: two explicit actions with owner and deadline, one decision, one vague 'someone should'.",
+  "transcript": [
+    ["00:00", "Morning everyone, quick stand-up on the sensor firmware."],
+    ["00:05", "The bootloader update passed all twenty power-cut tests last night."],
+    ["00:11", "We agreed to ship version 1.4 to the pilot customers."],
+    ["00:16", "Carlos will tag the release candidate by Wednesday."],
+    ["00:21", "The flash wear numbers still look higher than expected."],
+    ["00:27", "Someone should look at the logging rate at some point."],
+    ["00:32", "Elena will send the wear report to the hardware team by Friday."],
+    ["00:38", "That's all for today, thanks."]
+  ],
+  "decisions": [
+    {"t": "00:11", "keywords": ["ship", "1.4", "pilot"]}
+  ],
+  "actions": [
+    {"t": "00:16", "owner": "Carlos", "due": "by Wednesday", "keywords": ["tag", "release", "candidate"]},
+    {"t": "00:32", "owner": "Elena", "due": "by Friday", "keywords": ["send", "wear", "report"]}
+  ],
+  "traps": [
+    {"t": "00:27", "keywords": ["logging", "rate"]}
+  ]
+}

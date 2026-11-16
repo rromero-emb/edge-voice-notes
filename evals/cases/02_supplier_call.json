@@ -1,0 +1,23 @@
+{
+  "id": "02_supplier_call",
+  "description": "Supplier call: one action with a deadline but no named owner, one with owner only, a decision and a vague wish.",
+  "transcript": [
+    ["00:00", "Thanks for joining, this is about the enclosure order."],
+    ["00:06", "The supplier can deliver five hundred units in six weeks."],
+    ["00:12", "We decided to go with the grey plastic instead of aluminium."],
+    ["00:18", "The purchase order has to be signed before the 4th of December."],
+    ["00:25", "Tomas will check the drawings against the new board outline."],
+    ["00:31", "It would be nice to get a discount for the second batch."],
+    ["00:37", "Okay, let's close here."]
+  ],
+  "decisions": [
+    {"t": "00:12", "keywords": ["grey", "plastic", "aluminium"]}
+  ],
+  "actions": [
+    {"t": "00:18", "owner": null, "due": "before the 4th of December", "keywords": ["purchase", "order", "signed"]},
+    {"t": "00:25", "owner": "Tomas", "due": null, "keywords": ["check", "drawings", "board"]}
+  ],
+  "traps": [
+    {"t": "00:31", "keywords": ["discount", "second", "batch"]}
+  ]
+}

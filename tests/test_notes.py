@@ -105,6 +105,24 @@ class ValidationTests(unittest.TestCase):
         r = self.v(points=[{"text": "Same.", "t": "00:00"}, {"text": "same", "t": "00:07"}])
         self.assertEqual(len(r["points"]), 1)
 
+    def test_owner_named_on_another_line_is_dropped(self):
+        # "Maria" is in the section, but not at (or just before) the cited line 00:28
+        r = self.v([{"task": "order enclosures", "owner": "Maria", "due": None, "t": "00:28"}])
+        self.assertEqual(r["actions"], [])
+        self.assertIn("not named at the cited line", r["rejected_actions"][0]["reason"])
+
+    def test_past_reference_is_not_a_deadline(self):
+        s = [Segment(0, 5000, "Networking was switched off last week.")]
+        sec = notes.split_sections(s, 10_000)[0]
+        r = notes.validate_section({"actions": [{"task": "keep networking off", "owner": None,
+                                                 "due": "last week", "t": "00:00"}]}, s, sec)
+        self.assertEqual(r["actions"], [])
+
+    def test_decision_needs_a_decision_cue(self):
+        r = self.v(decisions=[{"text": "Keep networking off by default", "t": "00:21"},
+                              {"text": "Someone should check the microphone gain", "t": "00:14"}])
+        self.assertEqual([d["t_ms"] for d in r["decisions"]], [21000])
+
     def test_garbage_model_output(self):
         r = notes.validate_section({"points": "oops", "actions": [1, None, "x"]}, self.s, self.sec)
         self.assertEqual(r["points"], [])

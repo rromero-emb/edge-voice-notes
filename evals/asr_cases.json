@@ -1,0 +1,7 @@
+{
+  "note": "Real-engine WER cases. Audio is not stored in this repo; paths are relative to --samples-dir (default: the whisper.cpp samples/ folder). The JFK clip ships with whisper.cpp; the speech is in the US public domain.",
+  "cases": [
+    {"id": "jfk", "audio": "jfk.wav",
+     "reference": "And so my fellow Americans, ask not what your country can do for you, ask what you can do for your country."}
+  ]
+}

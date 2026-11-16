@@ -1,0 +1,18 @@
+{
+  "id": "05_decisions_only",
+  "description": "Design review with decisions and no actions at all. Any action in the output is invented.",
+  "transcript": [
+    ["00:00", "This is the design review for the storage layer."],
+    ["00:06", "We agreed to keep SQLite in WAL mode for the job queue."],
+    ["00:12", "Networking stays disabled by default, that was decided last week and still holds."],
+    ["00:19", "We decided not to encrypt the transcripts twice."],
+    ["00:24", "Nothing else to add, the design is fine as it is."]
+  ],
+  "decisions": [
+    {"t": "00:06", "keywords": ["sqlite", "wal", "queue"]},
+    {"t": "00:12", "keywords": ["networking", "disabled", "default"]},
+    {"t": "00:19", "keywords": ["encrypt", "transcripts", "twice"]}
+  ],
+  "actions": [],
+  "traps": []
+}

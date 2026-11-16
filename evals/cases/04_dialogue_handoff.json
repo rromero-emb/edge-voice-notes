@@ -1,0 +1,21 @@
+{
+  "id": "04_dialogue_handoff",
+  "description": "Owners and deadlines given across dialogue turns ('can you...?' / 'yes, by Monday'), not in one 'X will' sentence.",
+  "transcript": [
+    ["00:00", "Next topic is the test plan for the new image."],
+    ["00:05", "Lucia, can you update the test plan for the USB download?"],
+    ["00:10", "Sure, I can have it done by Monday."],
+    ["00:14", "And the release notes are still missing."],
+    ["00:19", "Marco, could you draft them?"],
+    ["00:22", "Yes, I'll draft the release notes before the review on the 12th."],
+    ["00:29", "Great, we agreed to freeze the image after that review."]
+  ],
+  "decisions": [
+    {"t": "00:29", "keywords": ["freeze", "image", "review"]}
+  ],
+  "actions": [
+    {"t": "00:05", "alt_t": ["00:10"], "owner": "Lucia", "due": "by Monday", "keywords": ["update", "test", "plan"]},
+    {"t": "00:19", "alt_t": ["00:22"], "owner": "Marco", "due": "before the review on the 12th", "keywords": ["draft", "release", "notes"]}
+  ],
+  "traps": []
+}

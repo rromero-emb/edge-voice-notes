@@ -1,0 +1,10 @@
+{
+  "note": "Regression gate for the fake engines (tests/test_evals.py). Raise min_* when the validator or the fake summariser improves; never lower them to make CI pass.",
+  "max_invented_actions": 0,
+  "max_trap_leaks": 0,
+  "min_action_precision": 1.0,
+  "min_action_recall": 0.57,
+  "min_decision_recall": 1.0,
+  "min_ts_valid": 1.0,
+  "baseline_must_leak_traps": true
+}

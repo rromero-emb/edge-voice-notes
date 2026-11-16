@@ -19,8 +19,10 @@ It is the software core of such a device, written the way embedded software has 
   and llama.cpp are the default backends; an NPU backend or another model server is one class. CI runs everything with
   deterministic fake engines, no models downloaded.
 - **Nothing invented in the action items.** The LLM proposes, plain code checks: an action item is kept only if its
-  owner or its deadline is actually said in the transcript section it cites. Every summary point is mapped back to the
-  timestamp of a real transcript line.
+  owner or its deadline is actually said at the line it cites (or the line just before it, for "Lucia, can you…?" /
+  "Sure, by Monday."), a past reference ("last week") is never a deadline, and a decision must cite a line that says
+  something was decided or agreed. Every item is mapped back to the timestamp of a real transcript line. These rules are
+  measured by an [evaluation set](#evaluation) in CI.
 - **Traceable.** Each recording's `status.json` records the engine binaries, model file names and SHA-256, timings and
   real-time factor, so any summary can be traced to the exact models that produced it.
 - **Stdlib only.** Python ≥ 3.11 and nothing else at runtime (Debian 12 / Armbian has it). The models run as separate
@@ -81,7 +83,7 @@ exactly this table.
 Machine: Intel i7-1355U (laptop, not idle during the run), Debian 12. Full output in
 [`bench/results-x86-i7-1355u/`](bench/results-x86-i7-1355u/).
 
-Quality check on [`bench/meeting_en.txt`](bench/meeting_en.txt), a scripted 5-minute meeting with 4 explicit action
+Quality check (13-nov, before the stricter validator of the [evaluation](#evaluation) section) on [`bench/meeting_en.txt`](bench/meeting_en.txt), a scripted 5-minute meeting with 4 explicit action
 items and 3 vague ones ("someone should check…", "I'll do it next sprint"):
 
 | | Result with the 1.5B model |
@@ -98,6 +100,56 @@ the model is a measurement on the target, not a guess.
 Note on reproducibility: transcripts are deterministic. `llama-server` at temperature 0 is not bit-exact across runs
 (batching), so a resumed summary can differ in wording from an uninterrupted one; the byte-identity test in CI uses the
 fake engines.
+
+## Evaluation
+
+[`evals/`](evals/) holds a small labelled set and a scorer, so changes to prompts, models or the validator are
+measured instead of eyeballed.
+
+- **Dataset:** 5 scripted English meetings ([`evals/cases/`](evals/cases/)), 7 expected action items, 6 expected
+  decisions and 6 traps: vague items that must *not* become actions ("someone should look at the logging rate",
+  "maybe we could ask Pedro…", "I'll think about the pricing"). One case has no actions at all, one gives owners and
+  deadlines across dialogue turns. All names are fictional.
+- **Metrics:** action precision/recall (keyword matching, one-to-one), invented actions (anything not in the labels),
+  trap leaks, owner/deadline accuracy on matched actions, timestamp accuracy, decision precision/recall, and WER with
+  Whisper's basic text normaliser (reimplemented with the stdlib).
+- **Baseline vs current:** both rows score the *same* model output. *baseline* takes the model's action items as they
+  come (a naive "ask the LLM for action items" integration); *current* runs them through the validator. The difference
+  is the validator, not the model.
+
+Results on my laptop (i7-1355U), Qwen2.5-1.5B-Instruct Q4_K_M via `llama-server`, temperature 0, 5 cases in 115 s:
+
+| Pipeline | Action P | Action R | Invented | Trap leaks | Owner ok | Due ok | Decision P | Decision R |
+|---|---|---|---|---|---|---|---|---|
+| baseline (raw model output) | 0.42 | 0.71 | 7 | 5 | 1.00 | 0.40 | 0.38 | 1.00 |
+| **current (validated)** | **1.00** | 0.71 | **0** | **0** | 1.00 | 0.40 | **1.00** | 1.00 |
+
+WER, whisper.cpp `ggml-base.en`: 0.000 on the 11 s JFK sample shipped with whisper.cpp (22 words). Full output:
+[`evals/results/x86-qwen2.5-1.5b/`](evals/results/x86-qwen2.5-1.5b/).
+
+What the set showed, and what changed because of it: the first run had the model attach "Tomas" (named on the next
+line) to an unrelated task, take "last week" as a deadline, and list almost every line as a decision (precision 0.38).
+The validator now checks owners and deadlines at the cited line, rejects past references and requires a decision cue.
+What it still gets wrong: the model misses the dialogue-style hand-over ("Lucia, can you…?" / "Sure, by Monday"), drops
+or truncates deadlines ("by next Monday" lost, "before the review on the 12th" shortened to "12th"), and once moved a
+deadline from the line above onto a neighbouring task. Recall (0.71) is the model's limit; the validator only removes.
+
+CI runs the same set with the fake engines (under a second) as a regression gate
+([`evals/thresholds.json`](evals/thresholds.json)): it fails if an invented action or a trap leak appears, or if
+recall drops. The fake summariser is rule-based, so the gate tests the validator and the scorer, not a model.
+
+```sh
+PYTHONPATH=src python3 evals/run_evals.py --engine fake --out /tmp/evals          # CI, no models
+PYTHONPATH=src python3 evals/run_evals.py --engine real --llama-url http://127.0.0.1:8080 \
+    --whisper-bin ~/src/whisper.cpp/build/bin/whisper-cli --whisper-model ~/src/models/ggml-base.en.bin \
+    --out evals/results/<machine>-<model>
+```
+
+Limits, read before quoting the numbers: 5 synthetic cases is a smoke test, not a benchmark, and the rules were tuned
+while looking at them, so expect lower numbers on real meetings. Keyword matching is coarse. WER is measured on one
+clean 11 s clip because there is no TTS or recorded meeting audio in this repo yet. `llama-server` is not bit-exact
+across runs, so the baseline row moves a little between runs. All numbers are from an x86 laptop, **not** from an ARM
+board.
 
 ## Quick start
 
@@ -171,6 +223,7 @@ src/edge_voice_notes/
   fsutil.py       atomic writes
   engines/        base interfaces, whisper.cpp, llama-server, fakes
 tests/            unittest: audio, validation, pipeline, recorder, engines (stub binaries/HTTP), SIGKILL resume
+evals/           labelled cases, scorer (WER, action P/R, traps), run_evals.py, thresholds, results
 tools/bench.py    real-engine benchmark
 deploy/           systemd units
 ```
@@ -181,6 +234,7 @@ deploy/           systemd units
 - NPU/GPU backends (e.g. Qualcomm QNN for whisper on the QCS6490).
 - Encrypted storage (LUKS volume unlocked at boot) and the USB-network download page.
 - Speaker labels (diarisation).
+- Evaluation on recorded meeting audio (WER on real speech, end to end) and a second model to compare.
 
 ## License
 

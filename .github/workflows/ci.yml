@@ -36,6 +36,13 @@ jobs:
           PYTHONPATH: src:tests
           EVN_CRASH_SEEDS: "1,2,3,4,5"
         run: python3 -m unittest discover -s tests -t tests -v
+      - name: Evaluation set (fake engines), results file must be up to date
+        env:
+          PYTHONPATH: src
+        run: |
+          python3 evals/run_evals.py --engine fake --label "fake engines (CI)" --out /tmp/evals
+          diff -u evals/results/fake/results.md /tmp/evals/results.md
+          cat /tmp/evals/results.md >> "$GITHUB_STEP_SUMMARY"
       - name: CLI smoke test with fake engines
         env:
           PYTHONPATH: src

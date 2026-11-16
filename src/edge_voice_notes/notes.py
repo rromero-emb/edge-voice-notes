@@ -199,8 +199,24 @@ def _due_in_text(due: str, haystack: str) -> bool:
     return bool(need) and need <= have
 
 
+_PAST = re.compile(r"\b(last|yesterday|ago|previous|earlier)\b")
+
+
+def _window(segs: list[Segment], sec: Section, ms: int, before: int, after: int) -> str:
+    """Text of the cited line plus `before`/`after` neighbours inside the section.
+    An owner is usually named in the line itself or in the question just before it
+    ("Lucia, can you...?" / "Sure, by Monday."); a name further away belongs to
+    another item."""
+    k = next(i for i in range(sec.first, sec.last + 1) if segs[i].start_ms == ms)
+    lo, hi = max(sec.first, k - before), min(sec.last, k + after)
+    return _norm(" ".join(s.text for s in segs[lo:hi + 1]))
+
+
+_DECISION_CUES = re.compile(r"\b(decid\w*|agree\w*|approv\w*|chose|choose|chosen|go with|going with|settled|"
+                            r"confirm\w*|final|stays|will stay|won't|will not)\b")
+
+
 def validate_section(raw: dict, segs: list[Segment], sec: Section) -> dict:
-    text = _norm(" ".join(s.text for s in segs[sec.first:sec.last + 1]))
     actions, rejected = [], []
     for a in raw.get("actions", []) if isinstance(raw.get("actions"), list) else []:
         if not isinstance(a, dict):
@@ -209,16 +225,16 @@ def validate_section(raw: dict, segs: list[Segment], sec: Section) -> dict:
         ms = _snap(segs, sec, a.get("t"), task)
         owner = a.get("owner") if isinstance(a.get("owner"), str) else None
         due = a.get("due") if isinstance(a.get("due"), str) else None
-        reasons = []
-        if owner is not None and (_norm(owner) in _NOT_OWNERS or not _in_text(owner, text)):
-            reasons.append(f"owner {owner!r} not named in transcript")
-            owner = None
-        if due is not None and not _due_in_text(due, text):
-            reasons.append(f"due {due!r} not stated in transcript")
-            due = None
         if not task or ms is None:
             rejected.append({"task": task, "t": a.get("t"), "reason": "missing task or bad timestamp"})
             continue
+        reasons = []
+        if owner is not None and (_norm(owner) in _NOT_OWNERS or not _in_text(owner, _window(segs, sec, ms, 1, 0))):
+            reasons.append(f"owner {owner!r} not named at the cited line")
+            owner = None
+        if due is not None and (not _due_in_text(due, _window(segs, sec, ms, 1, 0)) or _PAST.search(due.lower())):
+            reasons.append(f"due {due!r} not stated as a deadline at the cited line")
+            due = None
         if owner is None and due is None:
             rejected.append({"task": task, "t_ms": ms,
                              "reason": "; ".join(reasons) or "no explicit owner or deadline"})
@@ -228,7 +244,8 @@ def validate_section(raw: dict, segs: list[Segment], sec: Section) -> dict:
     return {
         "section": sec.index, "start_ms": sec.start_ms, "end_ms": sec.end_ms,
         "points": _clean_items(raw.get("points"), segs, sec, limit=6),
-        "decisions": _clean_items(raw.get("decisions"), segs, sec),
+        "decisions": [d for d in _clean_items(raw.get("decisions"), segs, sec)
+                      if _DECISION_CUES.search(_window(segs, sec, d["t_ms"], 0, 0))],
         "actions": actions,
         "rejected_actions": rejected,
     }
